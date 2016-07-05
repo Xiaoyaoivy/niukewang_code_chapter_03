@@ -28,3 +28,12 @@ ORM介绍
 对象关系映射（Object-Relational Mapping）提供了概念性的、易于理解的模型化数据的方法
 
 在Terminal里面运行python manage.py init_database
+
+filter指定列名的时候，可以不使用类名；
+filter_by也不是说任何时候都可以不指定类名
+主要就是当使用filter的时候条件之间是使用“=="，fitler_by使用的是"="。
+user1 = session.query(User).filter_by(id=1).first()
+user1 = session.query(User).filter(id==1).first()
+
+
+shift+ Tab 取消缩进

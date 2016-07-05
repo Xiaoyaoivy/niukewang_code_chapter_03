@@ -10,7 +10,7 @@ manager = Manager(app)
 
 
 def get_image_url():
-    return 'http://images.nowcoder.com/head' + str(random.randint(0, 1000)) + 'm.png'
+    return 'http://images.nowcoder.com/head/' + str(random.randint(0, 1000)) + 'm.png'
 
 
 @manager.command
@@ -24,7 +24,35 @@ def init_database():
             for k in range(0, 3):
                 db.session.add(Comment('This is a comment' + str(k), 1 + 3 * i + j, i + 1))
     db.session.commit()
-    # 查询
+
+    """更新UPDATE"""
+    # 方案1:更新50-100偶数位的用户名字
+    for i in range(50, 100, 2):
+        user = User.query.get(i)
+        user.username = '[New1]' + user.username
+     # 方案2：
+    User.query.filter_by(id=51).update({'username':'[New2]'})
+    #User.query.filter(id==52).update({'username': '[New2]'})错误
+    #User.query.filter_by(id > 2).update({'username': 'new' + str(i)})错误
+
+    """
+    方案不可行
+    for i in range(51, 100, 2):
+        User.query.filter(id > 51).update({'username': 'i'})
+        User.query.filter(id > 51).update({'username': '[New2]+i'})
+    """
+
+    db.session.commit()
+
+    """删除delete"""
+    for i in range(50,100,2):
+        comment = Comment.query.get(i+1)#先查询
+        db.session.delete(comment)#后删除
+
+    db.session.commit()
+
+
+    """查询"""
     print 1, User.query.all()  # 查询所有
     print 2, User.query.get(3)  # 查询第三个用户
     print 3, User.query.filter_by(id=5).first()
@@ -43,12 +71,12 @@ def init_database():
     print 9, User.query.paginate(page=1, per_page=10).items
     # 逆序打印print 9, User.query.order_by(User.id.desc()).paginate(page=1, per_page=10).items
 
-    #一对多，打印user关联内容
+    # 一对多，打印user关联内容
     user = User.query.get(1)
     print 10, user.images.all()
 
     image = Image.query.get(1)
-    print 11,image.user
+    print 11, image.user
 
 
 if __name__ == '__main__':
