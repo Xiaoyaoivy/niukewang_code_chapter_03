@@ -1,0 +1,30 @@
+项目结构搭建
+application()
+{
+    manage.py               <-脚本数据
+    runserver.py            <-启动服务器
+    {
+        application()       <-web目录
+        {
+            app.conf        <-配置文件
+            models.py       <-数据模型
+            views.py        <-视图，url的路径
+            __init__.py     <-模块导出文件
+        }
+        static              <-静态文件
+        templates()         <-页面模版
+        {
+            base.html
+            index.html
+            login.html
+        }
+    }
+}
+
+Flask安装：pip install Flask-SQLAlchemy
+MySQLdb:pip install Flask-MySQLdb
+
+ORM介绍
+对象关系映射（Object-Relational Mapping）提供了概念性的、易于理解的模型化数据的方法
+
+在Terminal里面运行python manage.py init_database
