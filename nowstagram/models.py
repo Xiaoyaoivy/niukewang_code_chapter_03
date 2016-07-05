@@ -1,17 +1,37 @@
 # -*- coding: utf-8 -*-
 from nowstagram import db
-from datetime import datetime #导入时间用于class Image
+from datetime import datetime  # 导入时间用于class Image
 import random
 
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # id是数据库中的一列，主键，自增长
+    content = db.Column(db.String(1024))  # 内容
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))  # 外键
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 外键
+    status = db.Column(db.Integer,default=0)  # 0正常，1表示被删除
+    user = db.relationship('User')
+
+    def __init__(self, content,image_id,user_id):
+        self.content = content
+        self.image_id = image_id
+        self.user_id = user_id
+
+    def __repr__(self):
+        return '<Comment %d %s>' % (self.id, self.content)
+
 """图片地址为：http://images.nowcoder.com/head/99m.png"""
+
+
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # id是数据库中的一列，主键，自增长
-    url = db.Column(db.String(512))#地址
+    url = db.Column(db.String(512))  # 地址
     # foreignkey表示图片的user_id从User中的user.id来
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_date = db.Column(db.DATETIME)
+    comments = db.relationship('Comment')
 
-    def __init__(self,url,user_id):
+    def __init__(self, url, user_id):
         self.url = url
         self.user_id = user_id
         self.created_date = datetime.now()
@@ -25,7 +45,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True)  # 定义为字符串类型，unique保证唯一
     password = db.Column(db.String(32))  # 定义为字符串类型
     head_url = db.Column(db.String(256))  # 头像
-    images = db.relationship('Image') #关联表
+    images = db.relationship('Image')  # 关联表
 
     def __init__(self, username, password):
         self.username = username
