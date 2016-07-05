@@ -1,4 +1,4 @@
-项目结构搭建
+项目结构搭建，路径中不能有中文，否则sqlite找不到文件，而且css加载无效
 application()
 {
     manage.py               <-脚本数据
