@@ -35,5 +35,10 @@ filter_by也不是说任何时候都可以不指定类名
 user1 = session.query(User).filter_by(id=1).first()
 user1 = session.query(User).filter(id==1).first()
 
+filter_by是等值过滤，filter不是等值，可以有选择范围。filter_by（username=username）即可
 
 shift+ Tab 取消缩进
+
+
+但需要使用这条语句的时候，需要用workbench新建db数据库文件，xxxxx表示密码
+SQLALCHEMY_DATABASE_URI = 'mysql://root:xxxxx@localhost:3306/db'
